@@ -5,8 +5,10 @@ import Navbar from '../components/navbar'
 import styles from '../styles/Home.module.css'
 import axios from 'axios'
 import config from '../config/config'
+import { useRouter } from 'next/router'
 //6135512059 patiparn 
 export default function Login({ token }) {
+    const router = useRouter()
     const [username, setUsername] = useState('un_user')
     const [password, setPassword] = useState('0000')
     const [status, setStatus] = useState('')
@@ -29,6 +31,7 @@ export default function Login({ token }) {
             console.log('error: ', JSON.stringify(e.response))
             setStatus(JSON.stringify(e.response).substring(0, 80) + "...")
         }
+            router.push('/profile')
     }
 
     const loginForm = () => (
