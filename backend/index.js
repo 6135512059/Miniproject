@@ -22,9 +22,8 @@ router.use(cors({ origin: 'http://localhost:3000', credentials: true }))
 router.use(express.json())
 router.use(express.urlencoded({ extended: false }))
 
-router.get('/user',
-    passport.authenticate('jwt', { session: false }),
-    (req, res, next) => {
+router.route('/user',passport.authenticate('jwt', { session: false }))
+    .get((req, res, next) => {
         res.json(users)
     });
 router.post('/login', (req, res, next) => {
@@ -69,24 +68,21 @@ router.get('/logout', (req, res) => {
 })
 
 /* GET user profile. */
-router.get('/profile',
-    passport.authenticate('jwt', { session: false }),
-    (req, res, next) => {
+router.route('/profile',passport.authenticate('jwt', { session: false }))
+    .get((req, res, next) => {
         res.send(req.user)
     });
 //Change information 
-router.put('/profile/:User_Id',
-    passport.authenticate('jwt', { session: false }),
-    (req, res, next) => {
+router.route('/profile/:User_Id',passport.authenticate('jwt', { session: false }))
+    
+    .put((req, res, next) => {
         const userId = req.params.User_Id ;
         let id = users.users.findIndex(item => +item.id === +userId)
         users.users[id].username = req.body.username
         users.users[id].email= req.body.email
         res.json(users)
-    });
-router.delete('/profile/:User_Id',
-    passport.authenticate('jwt', { session: false }),
-    (req, res, next) => {
+    })
+    .delete((req, res, next) => {
         const userId = req.params.User_Id 
         users.users = users.users.filter(item => +item.id !== +userId)
         res.json(users)
