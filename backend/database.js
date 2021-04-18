@@ -2,11 +2,14 @@ const bcrypt = require('bcrypt')
 
 let users = {
     users: [
-        { id: 1, name: 'Pung', password: '$2b$10$0AsMSQaUB0AlLnKzgeUOfOE.hWUodtuR4NOU954XLVy2gy3lBWsdO', email: 'wwarodom@gmail.com' , classuser: "Admin" },
-        { id: 2, name: 'Aum', password: '$2b$10$1Bu4tImM/Ms9rtU.8/n/COWpzUAGFB6YlsO5xZqFih1JUxafyFFXa', email: 'john@gmail.com'  ,classuser: "Admin"},
+        { id: 1, username: 'Pung', password: '$2b$10$0AsMSQaUB0AlLnKzgeUOfOE.hWUodtuR4NOU954XLVy2gy3lBWsdO', email: 'wwarodom@gmail.com' , classuser: 0 },
+        { id: 2, username: 'Aum', password: '$2b$10$1Bu4tImM/Ms9rtU.8/n/COWpzUAGFB6YlsO5xZqFih1JUxafyFFXa', email: 'john@gmail.com'  ,classuser: 0},
     ]
 }
-
+/*classuser: 0 Admin
+  classuser: 1 user
+  classuser: 2 un_user (not login)
+*/
 const SECRET = 'your_jwt_secret'
 const NOT_FOUND = -1
 

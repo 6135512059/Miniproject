@@ -70,6 +70,15 @@ router.get('/profile',
     (req, res, next) => {
         res.send(req.user)
     });
+//Change information 
+router.post('/profile/:User_Id',
+    passport.authenticate('jwt', { session: false }),
+    (req, res, next) => {
+        let id = +req.params.User_Id ;
+        let user = users.users.findIndex(item => +item.id === id)
+        const { username, email } = req.body 
+        res.json(users.users)
+    });
 
 router.post('/register',
     async (req, res) => {
