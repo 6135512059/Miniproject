@@ -12,11 +12,7 @@ export default function Login({ token }) {
     const [username, setUsername] = useState('un_user')
     const [password, setPassword] = useState('0000')
     const [status, setStatus] = useState('')
-    const [gundam, setGundam] = useState({})
-    const [gundamname , setGundamname] =useState('')
-    const [weight ,setweight]=useState(0)
-    const [beargundams, SetGundams] = useState({})
-    const [classuser, setClassuser] = useState('')
+    
     const login = async (req, res) => {
         try {
             let result = await axios.post(`${config.URL}/login`,
@@ -61,6 +57,7 @@ export default function Login({ token }) {
     const GuestloginForm =  () => {
         login()    
     }
+    
     const copyText = () => {
         navigator.clipboard.writeText(token)
     }
@@ -85,6 +82,7 @@ export default function Login({ token }) {
                 <button onClick={GuestloginForm}> Guest login </button>
                 <div>
                     <button onClick={login}>Login</button>
+                
                 </div>  
                 </div>
                 

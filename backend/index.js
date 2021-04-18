@@ -22,7 +22,11 @@ router.use(cors({ origin: 'http://localhost:3000', credentials: true }))
 router.use(express.json())
 router.use(express.urlencoded({ extended: false }))
 
-
+router.get('/user',
+    passport.authenticate('jwt', { session: false }),
+    (req, res, next) => {
+        res.json(users)
+    });
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         console.log('Login: ', req.body, user, err, info)
@@ -71,15 +75,22 @@ router.get('/profile',
         res.send(req.user)
     });
 //Change information 
-router.post('/profile/:User_Id',
+router.put('/profile/:User_Id',
     passport.authenticate('jwt', { session: false }),
     (req, res, next) => {
-        let id = +req.params.User_Id ;
-        let user = users.users.findIndex(item => +item.id === id)
-        const { username, email } = req.body 
-        res.json(users.users)
+        const userId = req.params.User_Id ;
+        let id = users.users.findIndex(item => +item.id === +userId)
+        users.users[id].username = req.body.username
+        users.users[id].email= req.body.email
+        res.json(users)
     });
-
+router.delete('/profile/:User_Id',
+    passport.authenticate('jwt', { session: false }),
+    (req, res, next) => {
+        const userId = req.params.User_Id 
+        users.users = users.users.filter(item => +item.id !== +userId)
+        res.json(users)
+    });
 router.post('/register',
     async (req, res) => {
         try {

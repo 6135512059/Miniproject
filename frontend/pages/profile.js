@@ -10,15 +10,28 @@ import config from '../config/config'
 const Profile1 = ({ token }) => {
 
     const [user, setUser] = useState({})
-    const [gundam, setGundam] = useState({})
-    const [gundamname , setGundamname] =useState('')
+    const [email, setemail] = useState('')
+    const [username , setusername] =useState('')
     const [weight ,setweight]=useState(0)
-    const [beargundams, SetGundams] = useState({})
+    const [bearusers, Setusers] = useState({})
     const [classuser, setClassuser] = useState('')
     useEffect(() => {
         profileUser()
     }, [])
-
+    const Edit = () => {
+        if(!user)
+          return (<li>No information</li>)
+        else
+        {   <div>
+                
+            </div>
+           
+        }
+        }
+    const rander = () => {
+    if(!user)
+      return (<li>No information</li>)
+    }
     const profileUser = async () => {
         try {
             // console.log('token: ', token)
@@ -33,7 +46,14 @@ const Profile1 = ({ token }) => {
         }
 
     }
- 
+    const UpdateUser = async(req, res,id) =>{
+        let New = await axios.put(`${config.URL}/profile/${id}`,{username,email}, { withCredentials: true })
+        setUser(New.data)
+      }
+      const DeleteUser= async(req, res,id) =>{
+        let New = await axios.delete(`${config.URL}/profile/${id}`, { withCredentials: true })
+        SetUser(New.data)
+      }
     return (
         <Layout>
             <Head>
@@ -41,14 +61,14 @@ const Profile1 = ({ token }) => {
             </Head>
             <div className={styles.container}>
                 <Navbar />
-                <h1>User profile</h1>
+                <h1>{user.username}</h1>
+                    <li key = {user.id}>
+                    Name: {user.username} || 
+                    email: {user.email}
+                    </li>
+                {rander()}
                 <div>
-                    <b>Token:</b> {token.substring(0, 15)}... <br /><br />
-                    This route is protected by token, user is required to login first.
-                    <br/>
-                    Otherwise, it will be redirect to Login page
-                    <br/><br/>
-                    {JSON.stringify(user)}
+                    
                 </div>
             </div>
         </Layout>
