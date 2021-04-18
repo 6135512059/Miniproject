@@ -92,6 +92,7 @@ router.post('/register',
 
             let id = (users.users.length) ? users.users[users.users.length - 1].id + 1 : 1
             hash = await bcrypt.hash(password, SALT_ROUND)
+            console.log(hash)
             users.users.push({ id, username, password: hash, email })
             res.status(200).json({ message: "Register success" })
         } catch {

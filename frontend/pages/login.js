@@ -7,9 +7,8 @@ import axios from 'axios'
 import config from '../config/config'
 //6135512059 patiparn 
 export default function Login({ token }) {
-
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('un_user')
+    const [password, setPassword] = useState('0000')
     const [status, setStatus] = useState('')
     const [gundam, setGundam] = useState({})
     const [gundamname , setGundamname] =useState('')
@@ -53,9 +52,12 @@ export default function Login({ token }) {
                     placeholder="password"
                     onChange={(e) => setPassword(e.target.value)} />
             </div>
+            
         </div>
     )
-
+    const GuestloginForm =  () => {
+        login()    
+    }
     const copyText = () => {
         navigator.clipboard.writeText(token)
     }
@@ -77,10 +79,13 @@ export default function Login({ token }) {
                 </div>
                 <br />
                 {loginForm()}
+                <button onClick={GuestloginForm}> Guest login </button>
                 <div>
                     <button onClick={login}>Login</button>
+                </div>  
                 </div>
-            </div>
+                
+                
         </Layout>
     )
 }
