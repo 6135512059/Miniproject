@@ -26,6 +26,13 @@ router.route('/user',passport.authenticate('jwt', { session: false }))
     .get((req, res, next) => {
         res.json(users)
     });
+router.route('/class/:Class_id',passport.authenticate('jwt', { session: false }))
+    .get((req, res, next) => {
+        const Class_id = req.params.Class_id ;
+        let id= users.users.findIndex(item => +item.id === +Class_id)
+        console.log(users.users[id].classuser)
+        res.json(users.users[id].classuser)
+    });
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         console.log('Login: ', req.body, user, err, info)
@@ -68,8 +75,9 @@ router.get('/logout', (req, res) => {
 })
 
 /* GET user profile. */
-router.route('/profile',passport.authenticate('jwt', { session: false }))
-    .get((req, res, next) => {
+router.get('/profile',
+    passport.authenticate('jwt', { session: false }),
+    (req, res, next) => {
         res.send(req.user)
     });
 //Change information 
@@ -87,12 +95,20 @@ router.route('/profile/:User_Id',passport.authenticate('jwt', { session: false }
         users.users = users.users.filter(item => +item.id !== +userId)
         res.json(users)
     });
+router.delete('/profile/:User_Id',
+    passport.authenticate('jwt', { session: false }),
+    (req, res, next) => {
+        const userId = req.params.User_Id 
+        users.users = users.users.filter(item => +item.id !== +userId)
+        res.json(users)
+    });
 router.post('/register',
     async (req, res) => {
         try {
             const SALT_ROUND = 10
             const { username, email, password } = req.body 
-            if (!username || !email || !password)
+            const classuser = 1
+            if (!username || !email || !password || !classuser)
                 return res.json( {message: "Cannot register with empty string"})
             if (db.checkExistingUser(username) !== db.NOT_FOUND)
                 return res.json({ message: "Duplicated user" })
@@ -100,7 +116,8 @@ router.post('/register',
             let id = (users.users.length) ? users.users[users.users.length - 1].id + 1 : 1
             hash = await bcrypt.hash(password, SALT_ROUND)
             console.log(hash)
-            users.users.push({ id, username, password: hash, email })
+            console.log("Class =>" + classuser)
+            users.users.push({ id, username, password: hash, email ,classuser})
             res.status(200).json({ message: "Register success" })
         } catch {
             res.status(422).json({ message: "Cannot register" })

@@ -8,12 +8,11 @@ import axios from 'axios'
 import config from '../config/config'
 
 export default function Register({ token }) {
-
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [status, setStatus] = useState('')
-
+    const [classuser, setclassuser] = useState(1)
     const profileUser = async () => {
         console.log('token: ', token)
         const users = await axios.get(`${config.URL}/profile`, {
@@ -25,7 +24,7 @@ export default function Register({ token }) {
     const register = async (req, res) => {
         try {
             let result = await axios.post(`${config.URL}/register`,
-                { username, email, password })
+                { username, email, password ,classuser})
             console.log('result: ', result)
             console.log('result.data:  ', result.data)
             console.log('token:  ', token)

@@ -5,28 +5,59 @@ import styles from '../styles/Home.module.css'
 import Navbar from '../components/navbar'
 import { useState , useEffect} from 'react'
 import axios from 'axios'
-export default function Getuser() {
+import withAuth from '../components/withAuth'
+const Getuse = ({ token }) => {
     const [users , Setusers] = useState({})
-    const [username , setusername] =useState('')
-    const [email ,setemail]=useState(0)
-    const [user , Setuser] = useState({})
+    const [user , setUser] =useState({})
+    const [username , setusername] =useState("")
+    const [email ,setemail]=useState("")
+    const [classuser, setclassuser] = useState(1)
     useEffect(()=>{
-      getusers()
+      getusers(),
+      profileUser()
     },[])
+    const profileUser = async () => {
+      try {
+          // console.log('token: ', token)
+          const users = await axios.get(`${config.URL}/profile`, {
+              headers: { Authorization: `Bearer ${token}` }
+          })
+          // console.log('user: ', users.data)
+          setUser(users.data)
+      }
+      catch (e) {
+          console.log(e)
+      }
+
+  }
     const Updateuser = async(id) =>{
+      if( +user.classuser  <= 1 )
+    {
       let user = await axios.put(`${config.URL}/profile/${id}`,{username,email})
       Setusers(user.data)
     }
+    else
+      alert("Need loging")
+    }
     const getusers = async() =>{
-      
-        let user = await axios.get(`${config.URL}/user`)
-        Setusers(user.data)
-        console.log('users: ',user.data)
+        
+        
+          let user = await axios.get(`${config.URL}/user`)
+          Setusers(user.data)
+          console.log('users: ',user.data)
+        
       
     }
     const Deleteuser= async(id) =>{
+    let pass = await axios.get(`${config.URL}/class/${id}`)
+    setclassuser(pass.data)
+    if( +user.classuser  <= 1 )
+    {
       let user = await axios.delete(`${config.URL}/profile/${id}`)
       Setusers(user.data)
+    }
+    else
+      alert("Need Login")
     }
     const adduser = async (username,email) => {
      let user = await axios.post(`${config.URL}/profile/${id}`,{username,email})
@@ -56,12 +87,16 @@ export default function Getuser() {
         <br></br>
         <h1>User List</h1>
         {printusers()}
-      <h2>Add user</h2>
-      <input type="text" onChange={(e)=>setusername(e.target.value)}/><br/>
-      <input type="text" onChange={(e)=>setemail(e.target.value)}/><br/>
+      <h2>Edit user</h2>
+      Name: <input type="text" onChange={(e)=>setusername(e.target.value)}/><br/>
+      email:<input type="text" onChange={(e)=>setemail(e.target.value)}/><br/>
       
       </div>
       </Layout>
     )
   }
+  export default withAuth(Getuse)
 
+  export function getServerSideProps({ req, res }) {
+      return { props: { token: req.cookies.token || "" } };
+  }
