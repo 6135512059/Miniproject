@@ -7,7 +7,7 @@ import { useState , useEffect} from 'react'
 import axios from 'axios'
 import withAuth from '../components/withAuth'
 const Getuse = ({ token }) => {
-    const [users , Setusers] = useState({})
+    const [gundams , Setgundams] = useState({})
     const [user , setUser] =useState({})
     const [username , setusername] =useState("")
     const [email ,setemail]=useState("")
@@ -16,7 +16,7 @@ const Getuse = ({ token }) => {
       getusers(),
       profileUser()
     },[])
-    const profileUser = async () => {
+    const profilegundam = async () => {
       try {
           // console.log('token: ', token)
           const users = await axios.get(`${config.URL}/profile`, {
@@ -30,52 +30,52 @@ const Getuse = ({ token }) => {
       }
 
   }
-    const Updateuser = async(id) =>{
-      if( +user.classuser  <= 1 )
+    const Updategundam = async(id) =>{
+      if( +gundam.classgundam  <= 1 )
     {
-      let user = await axios.put(`${config.URL}/profile/${id}`,{username,email})
-      Setusers(user.data)
+      let gundam = await axios.put(`${config.URL}/profile/${id}`,{gundamname,email})
+      Setgundams(gundam.data)
     }
     else
       alert("Need loging")
     }
-    const getusers = async() =>{
+    const getgundams = async() =>{
         
         
-          let user = await axios.get(`${config.URL}/user`)
-          Setusers(user.data)
-          console.log('users: ',user.data)
+          let gundam = await axios.get(`${config.URL}/gundam`)
+          Setgundams(gundam.data)
+          console.log('gundams: ',gundam.data)
         
       
     }
-    const Deleteuser= async(id) =>{
+    const Deletegundam= async(id) =>{
     let pass = await axios.get(`${config.URL}/class/${id}`)
-    setclassuser(pass.data)
-    if( +user.classuser  <= 1 )
+    setclassgundam(pass.data)
+    if( +gundam.classgundam  <= 1 )
     {
-      let user = await axios.delete(`${config.URL}/profile/${id}`)
-      Setusers(user.data)
+      let gundam = await axios.delete(`${config.URL}/profile/${id}`)
+      Setgundams(gundam.data)
     }
     else
       alert("Need Login")
     }
-    const adduser = async (username,email) => {
-     let user = await axios.post(`${config.URL}/profile/${id}`,{username,email})
-     Setusers(user.data)
+    const addgundam = async (gundamname,email) => {
+     let gundam = await axios.post(`${config.URL}/profile/${id}`,{gundamname,email})
+     Setgundams(gundam.data)
     }
-    const printusers =() => {
-      if(users.users && users.users.length)
-      return users.users.map((item,index) => 
+    const printgundams =() => {
+      if(gundams.gundams && gundams.gundams.length)
+      return gundams.gundams.map((item,index) => 
       <li key ={index}>
           number : {index+1} ,
-          Name : {item.username} , 
+          Name : {item.gundamname} , 
           Email : {item.email}
-          <button onClick={()=>Updateuser(item.id)}>Update</button>
-          <button onClick={()=>Deleteuser(item.id)}>Delete</button>
+          <button onClick={()=>Updategundam(item.id)}>Update</button>
+          <button onClick={()=>Deletegundam(item.id)}>Delete</button>
           </li>
        )
       else  
-        return (<li>No user</li>)
+        return (<li>No gundam</li>)
     }
     return (
     <Layout>
@@ -85,10 +85,10 @@ const Getuse = ({ token }) => {
       <div className={styles.container}>
         <Navbar />
         <br></br>
-        <h1>User List</h1>
-        {printusers()}
-      <h2>Edit user</h2>
-      Name: <input type="text" onChange={(e)=>setusername(e.target.value)}/><br/>
+        <h1>gundam List</h1>
+        {printgundams()}
+      <h2>Edit gundam</h2>
+      Name: <input type="text" onChange={(e)=>setgundamname(e.target.value)}/><br/>
       email:<input type="text" onChange={(e)=>setemail(e.target.value)}/><br/>
       
       </div>
