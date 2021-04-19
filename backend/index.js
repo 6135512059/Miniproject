@@ -1,18 +1,15 @@
 
 const express = require('express'),
-    app = express(),
-    passport = require('passport'),
-    port = process.env.PORT || 80,
-    cors = require('cors'),
-    cookie = require('cookie')
-
+app = express(),
+passport = require('passport'),
+port = process.env.PORT || 80,
+cors = require('cors'),
+cookie = require('cookie')
 const bcrypt = require('bcrypt')
-
 const db = require('./database.js')
 let users = db.users
 
 require('./passport.js')
-
 const router = require('express').Router(),
     jwt = require('jsonwebtoken')
 
@@ -24,6 +21,7 @@ router.use(express.urlencoded({ extended: false }))
 
 router.route('/user',passport.authenticate('jwt', { session: false }))
     .get((req, res, next) => {
+        console.log(users)
         res.json(users)
     });
 router.route('/class/:Class_id',passport.authenticate('jwt', { session: false }))
@@ -118,13 +116,16 @@ router.post('/register',
             console.log(hash)
             console.log("Class =>" + classuser)
             users.users.push({ id, username, password: hash, email ,classuser})
+            console.log(users.users)
             res.status(200).json({ message: "Register success" })
         } catch {
             res.status(422).json({ message: "Cannot register" })
         }
     })
 
-router.get('/alluser', (req,res) => res.json(db.users.users))
+router.get('/alluser', (req,res) =>{
+    console.log(db.users.users)
+    res.json(db.users)})
 
 router.get('/', (req, res, next) => {
     res.send('Respond without authentication');

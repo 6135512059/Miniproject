@@ -42,8 +42,9 @@ const Getuse = ({ token }) => {
     const getusers = async() =>{
         
         
-          let user = await axios.get(`${config.URL}/user`)
+          let user = await axios.get(`${config.URL}/alluser`)
           Setusers(user.data)
+      
           console.log('users: ',user.data)
         
       
@@ -51,7 +52,7 @@ const Getuse = ({ token }) => {
     const Deleteuser= async(id) =>{
     let pass = await axios.get(`${config.URL}/class/${id}`)
     setclassuser(pass.data)
-    if( +user.classuser  <= 1 )
+    if( +user.classuser  <= classuser )
     {
       let user = await axios.delete(`${config.URL}/profile/${id}`)
       Setusers(user.data)

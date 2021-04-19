@@ -26,7 +26,10 @@ export default function Login({ token }) {
             console.log('result.data:  ', result.data)
             console.log('token:  ', token)
             setStatus(result.status + ': ' + result.data.user.username)
+            setUsername('')
+            setPassword('')
             router.push('/profile')
+           
         }
         catch (e) {
             console.log('error: ', JSON.stringify(e.response))
@@ -59,14 +62,18 @@ export default function Login({ token }) {
             
         </div>
     )
-    const GuestloginForm = async (req, res) => {
+    const GuestloginForm = () => {
         setUsername('un_user')
         setPassword('0000')
-        getLogin()
+        if(!username)
+        {
+            setUsername('un_user')
+            setPassword('0000')  
+        }
+        else
+            login()
     }
-    const getLogin = () => {
-        login()
-    }
+   
     const copyText = () => {
         navigator.clipboard.writeText(token)
     }
