@@ -6,28 +6,33 @@ import styles from '../styles/Home.module.css'
 import axios from 'axios'
 import config from '../config/config'
 import { useRouter } from 'next/router'
+import { getLocationOrigin } from 'next/dist/next-server/lib/utils'
 //6135512059 patiparn 
 export default function Login({ token }) {
     const router = useRouter()
-    const [username, setUsername] = useState('un_user')
-    const [password, setPassword] = useState('0000')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
     const [status, setStatus] = useState('')
+    const [remember, setRemember] = useState('')
     
     const login = async (req, res) => {
         try {
+            if(remember == 'on')
+                alert("Rememer User")
             let result = await axios.post(`${config.URL}/login`,
-                { username, password },
+                { username, password ,remember},
                 { withCredentials: true })
             console.log('result: ', result)
             console.log('result.data:  ', result.data)
             console.log('token:  ', token)
             setStatus(result.status + ': ' + result.data.user.username)
+            router.push('/profile')
         }
         catch (e) {
             console.log('error: ', JSON.stringify(e.response))
             setStatus(JSON.stringify(e.response).substring(0, 80) + "...")
         }
-            router.push('/profile')
+            
     }
 
     const loginForm = () => (
@@ -54,10 +59,14 @@ export default function Login({ token }) {
             
         </div>
     )
-    const GuestloginForm =  () => {
-        login()    
+    const GuestloginForm = async (req, res) => {
+        setUsername('un_user')
+        setPassword('0000')
+        getLogin()
     }
-    
+    const getLogin = () => {
+        login()
+    }
     const copyText = () => {
         navigator.clipboard.writeText(token)
     }
@@ -79,10 +88,11 @@ export default function Login({ token }) {
                 </div>
                 <br />
                 {loginForm()}
+                <input type="checkbox" name = "remember"  onChange={(e) => setRemember(e.target.value)}/> 
                 <button onClick={GuestloginForm}> Guest login </button>
                 <div>
-                    <button onClick={login}>Login</button>
-                
+                 <button onClick={login}>Login</button>
+               
                 </div>  
                 </div>
                 
