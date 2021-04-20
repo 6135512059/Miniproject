@@ -6,7 +6,10 @@ import Navbar from '../components/navbar'
 import { useState , useEffect} from 'react'
 import axios from 'axios'
 import withAuth from '../components/withAuth'
+import { useRouter } from 'next/router'
+
 const Getuse = ({ token }) => {
+    const router = useRouter()
     const [users , Setusers] = useState({})
     const [user , setUser] =useState({})
     const [username , setusername] =useState("")
@@ -64,6 +67,9 @@ const Getuse = ({ token }) => {
      let user = await axios.post(`${config.URL}/profile/${id}`,{username,email})
      Setusers(user.data)
     }
+    const ReturnProfile = () =>{
+      router.push('/profile')
+    }
     const printusers =() => {
       if(users.users && users.users.length)
       return users.users.map((item,index) => 
@@ -91,7 +97,7 @@ const Getuse = ({ token }) => {
       <h2>Edit user</h2>
       Name: <input type="text" onChange={(e)=>setusername(e.target.value)}/><br/>
       email:<input type="text" onChange={(e)=>setemail(e.target.value)}/><br/>
-      
+      <button onClick={ReturnProfile}>Profile</button>
       </div>
       </Layout>
     )
