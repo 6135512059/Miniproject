@@ -2,10 +2,12 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
 import axios from 'axios' 
-
+import Layout from '../components/layout'
+import Navbar from '../components/navbar'
 const URL ='http://localhost/api/gundam'
+
 export default function Home() {
-  const [gundam , Setgundam] = useState({})
+  const [gundams , Setgundams] = useState({})
   const [name , setname] =useState('')
   const [weight ,setweight]=useState(0)
   const [gundam , Setgundam] = useState({})
@@ -31,7 +33,7 @@ export default function Home() {
    let gundam = await axios.post(URL ,{name,weight})
    Setgundam(gundam.data)
   }
-  const getgundam =async(id) =>{
+  const getgundams =async(id) =>{
     let gundam = await axios.get(`${URL}/${id}`)
     Setgundam({name: gundam.data.name ,weight: gundam.data.weight})
   }
@@ -51,15 +53,15 @@ export default function Home() {
       return (<li>No gundam</li>)
   }
   return (
-    <div>gundam
-      
-      {printgundam()}
-      Select gundam: {gundam.name} : {gundam.weight}
-    <h2>Add gundam</h2>
-    <input type="text" onChange={(e)=>setname(e.target.value)}/><br/>
-    <input type="number" onChange={(e)=>setweight(e.target.value)}/><br/>
-    <button onClick={()=>addgundam(name,weight)}>ADD</button>
-    
+    <Layout>
+        <Head>
+            <title>All uers</title>
+        </Head>
+    <div className={styles.container}>
+    <Navbar/>
+    <h2>Gundam List</h2>
+      {printgundam()}  
     </div>
+    </Layout>
   )
 }

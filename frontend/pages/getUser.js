@@ -84,7 +84,7 @@ const Getuse = ({ token }) => {
             <title>All uers</title>
         </Head>
       <div className={styles.container}>
-        <Navbar />
+       
         <br></br>
         <h1>User List</h1>
         {printusers()}
