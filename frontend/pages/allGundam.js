@@ -1,102 +1,65 @@
-import Layout from '../components/layout'
 import Head from 'next/head'
-import config from '../config/config'
+import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
-import Navbar from '../components/navbar'
-import { useState , useEffect} from 'react'
-import axios from 'axios'
-import withAuth from '../components/withAuth'
-const Getuse = ({ token }) => {
-    const [gundams , Setgundams] = useState({})
-    const [user , setUser] =useState({})
-    const [username , setusername] =useState("")
-    const [email ,setemail]=useState("")
-    const [classuser, setclassuser] = useState(1)
-    useEffect(()=>{
-      getusers(),
-      profileUser()
-    },[])
-    const profilegundam = async () => {
-      try {
-          // console.log('token: ', token)
-          const users = await axios.get(`${config.URL}/profile`, {
-              headers: { Authorization: `Bearer ${token}` }
-          })
-          // console.log('user: ', users.data)
-          setUser(users.data)
-      }
-      catch (e) {
-          console.log(e)
-      }
+import axios from 'axios' 
 
+const URL ='http://localhost/api/gundam'
+export default function Home() {
+  const [gundam , Setgundam] = useState({})
+  const [name , setname] =useState('')
+  const [weight ,setweight]=useState(0)
+  const [gundam , Setgundam] = useState({})
+  useEffect(()=>{
+    getgundam()
+  },[])
+  const Updategundam = async(id) =>{
+    let gundam = await axios.put(`${URL}/${id}`,{name,weight})
+    Setgundam(gundam.data)
   }
-    const Updategundam = async(id) =>{
-      if( +gundam.classgundam  <= 1 )
-    {
-      let gundam = await axios.put(`${config.URL}/profile/${id}`,{gundamname,email})
-      Setgundams(gundam.data)
-    }
-    else
-      alert("Need loging")
-    }
-    const getgundams = async() =>{
-        
-        
-          let gundam = await axios.get(`${config.URL}/gundam`)
-          Setgundams(gundam.data)
-          console.log('gundams: ',gundam.data)
-        
+  const getgundam = async() =>{
+    
+      let gundam = await axios.get(URL)
+      Setgundam(gundam.data)
+      console.log('gundam: ',gundam.data)
+    
+  }
+  const Deletegundam= async(id) =>{
+    let gundam = await axios.delete(`${URL}/${id}`)
+    Setgundam(gundam.data)
+  }
+  const addgundam = async (name,weight) => {
+   let gundam = await axios.post(URL ,{name,weight})
+   Setgundam(gundam.data)
+  }
+  const getgundam =async(id) =>{
+    let gundam = await axios.get(`${URL}/${id}`)
+    Setgundam({name: gundam.data.name ,weight: gundam.data.weight})
+  }
+  const printgundam =() => {
+    if(gundam.list && gundam.list.length)
+    return gundam.list.map((item,index) => 
+    <li key ={index}>
+        : {index+1}
+        : {item.name} 
+        : {item.weight}
+        <button onClick={()=>getgundam(item.id)}>get</button>
+        <button onClick={()=>Updategundam(item.id)}>Update</button>
+        <button onClick={()=>Deletegundam(item.id)}>Delete</button>
+        </li>
+     )
+    else  
+      return (<li>No gundam</li>)
+  }
+  return (
+    <div>gundam
       
-    }
-    const Deletegundam= async(id) =>{
-    let pass = await axios.get(`${config.URL}/class/${id}`)
-    setclassgundam(pass.data)
-    if( +gundam.classgundam  <= 1 )
-    {
-      let gundam = await axios.delete(`${config.URL}/profile/${id}`)
-      Setgundams(gundam.data)
-    }
-    else
-      alert("Need Login")
-    }
-    const addgundam = async (gundamname,email) => {
-     let gundam = await axios.post(`${config.URL}/profile/${id}`,{gundamname,email})
-     Setgundams(gundam.data)
-    }
-    const printgundams =() => {
-      if(gundams.gundams && gundams.gundams.length)
-      return gundams.gundams.map((item,index) => 
-      <li key ={index}>
-          number : {index+1} ,
-          Name : {item.gundamname} , 
-          Email : {item.email}
-          <button onClick={()=>Updategundam(item.id)}>Update</button>
-          <button onClick={()=>Deletegundam(item.id)}>Delete</button>
-          </li>
-       )
-      else  
-        return (<li>No gundam</li>)
-    }
-    return (
-    <Layout>
-        <Head>
-            <title>All uers</title>
-        </Head>
-      <div className={styles.container}>
-        <Navbar />
-        <br></br>
-        <h1>gundam List</h1>
-        {printgundams()}
-      <h2>Edit gundam</h2>
-      Name: <input type="text" onChange={(e)=>setgundamname(e.target.value)}/><br/>
-      email:<input type="text" onChange={(e)=>setemail(e.target.value)}/><br/>
-      
-      </div>
-      </Layout>
-    )
-  }
-  export default withAuth(Getuse)
-
-  export function getServerSideProps({ req, res }) {
-      return { props: { token: req.cookies.token || "" } };
-  }
+      {printgundam()}
+      Select gundam: {gundam.name} : {gundam.weight}
+    <h2>Add gundam</h2>
+    <input type="text" onChange={(e)=>setname(e.target.value)}/><br/>
+    <input type="number" onChange={(e)=>setweight(e.target.value)}/><br/>
+    <button onClick={()=>addgundam(name,weight)}>ADD</button>
+    
+    </div>
+  )
+}
