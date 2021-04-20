@@ -6,9 +6,10 @@ import styles from '../styles/Home.module.css'
 import axios from 'axios'
 import withAuth from '../components/withAuth'
 import config from '../config/config'
+import { useRouter } from 'next/router'
 
 const Profile1 = ({ token }) => {
-
+    const router = useRouter()
     const [user, setUser] = useState({})
     useEffect(() => {
         profileUser()
@@ -32,7 +33,15 @@ const Profile1 = ({ token }) => {
         }
 
     }
-
+    const Edituser = () => {
+        if (user.classuser == 0)
+        return <div>
+                <button onClick={GotoEdit}>Edit User</button>                      
+               </div>
+    }
+    const GotoEdit = () =>{
+      router.push('/getUser')
+    }
     return (
         <Layout>
             <Head>
@@ -47,7 +56,7 @@ const Profile1 = ({ token }) => {
                     </li>
                 {rander()}
                 <div>
-                    
+                {Edituser()}                       
                 </div>
             </div>
         </Layout>

@@ -8,7 +8,9 @@ cookie = require('cookie')
 const bcrypt = require('bcrypt')
 const db = require('./database.js')
 let users = db.users
-
+let Userlist = {
+    users: []
+}
 require('./passport.js')
 const router = require('express').Router(),
     jwt = require('jsonwebtoken')
@@ -21,8 +23,9 @@ router.use(express.urlencoded({ extended: false }))
 
 router.route('/user',passport.authenticate('jwt', { session: false }))
     .get((req, res, next) => {
-        console.log(users)
-        res.json(users)
+        let Userlist = users.users.findIndex(item => +item.id === 3)
+        console.log(Userlist)
+        res.json(Userlist)
     });
 router.route('/class/:Class_id',passport.authenticate('jwt', { session: false }))
     .get((req, res, next) => {
@@ -124,8 +127,10 @@ router.post('/register',
     })
 
 router.get('/alluser', (req,res) =>{
-    console.log(db.users.users)
-    res.json(db.users)})
+    Userlist.users = users.users.filter(item => +item.id !== 3)
+    console.log(Userlist)
+    res.json(Userlist)
+})
 
 router.get('/', (req, res, next) => {
     res.send('Respond without authentication');
