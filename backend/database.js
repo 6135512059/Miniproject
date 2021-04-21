@@ -7,19 +7,31 @@ let users = {
         { id: 3, username: 'un_user', password: '$2b$10$CCJEfK6HJg5cX7Ow.IRKuOihh.zvwSfBm8ojMtY1xVEqLCNgSj5Yi', email: 'NaN'  ,classuser: 2},
     ]
 }
+let Gundams = {
+  Gundams: [
+      { id: 1, name: 'Unicorn Gundam', type: 'Gundam', Story: 'Main story' , classgundam: 0 },
+      { id: 2, name: 'Wing Gundam ', type: 'Gundam', Story: 'Main story'  ,classgundam: 0},
+      { id: 3, name: '00 Gundam', type: 'Gundam', Story: 'Side story'  ,classgundam: 0},
+      { id: 4, name: 'GNR-010 0 Raiser', type: 'Mobile armor', Story: 'Side story'  ,classgundam: 0},
+      { id: 5, name: 'GN-0000/XN XN 00 Gundam', type: 'SS Gundam', Story: 'Side story'  ,classgundam: 0},
+  ]
+}
 /*classuser: 0 Admin
   classuser: 1 user
   classuser: 2 un_user (not login)
 */
 const SECRET = 'your_jwt_secret'
 const NOT_FOUND = -1
-
+exports.Gundams = Gundams
 exports.users = users 
 exports.SECRET = SECRET
 exports.NOT_FOUND = NOT_FOUND
 
 exports.setUsers = function(_users) { 
   users = _users;
+}
+exports.setGundams = function(_Gundams) { 
+  Gundams = _Gundams;
 }
 
 // === validate username/password ===

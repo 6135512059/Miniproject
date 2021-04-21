@@ -7,7 +7,9 @@ cors = require('cors'),
 cookie = require('cookie')
 const bcrypt = require('bcrypt')
 const db = require('./database.js')
+let gundams = db.Gundams
 let users = db.users
+let user = {}
 let Userlist = {
     users: []
 }
@@ -20,13 +22,55 @@ router.use(cors({ origin: 'http://localhost:3000', credentials: true }))
 // router.use(cors())
 router.use(express.json())
 router.use(express.urlencoded({ extended: false }))
-
-router.route('/user',passport.authenticate('jwt', { session: false }))
-    .get((req, res, next) => {
-        let Userlist = users.users.findIndex(item => +item.id === 3)
-        console.log(Userlist)
-        res.json(Userlist)
+router.route('/userlogin')
+    .get((req, res) => {
+        console.log("ส่งค่าไป Gundam list" + user)
+        res.json(user)
     });
+router.route('/gundam')
+    .get((req, res) => {
+        console.log(gundams)
+        res.json(gundams)
+    })
+    .post((req, res) => {
+        console.log(req.body)
+        let newgundam = {}
+        newgundam.id = (gundams.Gundams.length)?gundams.Gundams[gundams.Gundams.length - 1].id + 1:1
+        newgundam.name = req.body.name
+        newgundam.type= req.body.type
+        newgundam.Story= req.body.Story
+        newgundam.classgundam= req.body.classgundam
+        gundams = { "Gundams": [...gundams.Gundams, newgundam] }
+        res.json(gundams)
+    })
+router.route('/gundam/:Gundam_ID')
+    .get((req, res) => {
+        let Gundam_ID = req.params.Gundam_ID
+        let ID = gundams.Gundams.findIndex((item)=> +item.id === +Gundam_ID)
+        console.log(gundams.Gundams[ID])
+        res.json(gundams.Gundams[ID])
+    })
+    .put((req, res) => {
+        let Gundam_ID = req.params.Gundam_ID ;
+        let id = gundams.Gundams.findIndex(item => +item.id === +Gundam_ID)
+        gundams.Gundams[id].name = req.body.name
+        gundams.Gundams[id].type= req.body.type
+        gundams.Gundams[id].Story= req.body.Story
+        gundams.Gundams[id].classgundam= req.body.classgundam
+        res.json(gundams)
+    })
+    .delete((req, res) => {
+        let Gundam_ID = req.params.Gundam_ID 
+        gundams.Gundams = gundams.Gundams.filter(item => +item.id !== +Gundam_ID)
+        res.json(gundams.Gundams)
+    });
+router.route('/gundam2/:Gundam_ID')
+    .get((req, res) => {
+        let Gundam_ID = req.params.Gundam_ID
+        let ID = gundams.Gundams.findIndex((item)=> +item.id === +Gundam_ID)
+        console.log(gundams.Gundams[ID])
+        res.json(gundams.Gundams[ID])
+    })
 router.route('/class/:Class_id',passport.authenticate('jwt', { session: false }))
     .get((req, res, next) => {
         const Class_id = req.params.Class_id ;
@@ -61,6 +105,9 @@ router.post('/login', (req, res, next) => {
 })
 
 router.get('/logout', (req, res) => { 
+    console.log("logout =>" + user.username)
+    user = {}
+    console.log(user)
     res.setHeader(
         "Set-Cookie",
         cookie.serialize("token", '', {
@@ -79,7 +126,9 @@ router.get('/logout', (req, res) => {
 router.get('/profile',
     passport.authenticate('jwt', { session: false }),
     (req, res, next) => {
-        res.send(req.user)
+        user = req.user;
+        console.log(user)
+        res.send(user)
     });
 //Change information 
 router.route('/profile/:User_Id',passport.authenticate('jwt', { session: false }))
@@ -92,13 +141,6 @@ router.route('/profile/:User_Id',passport.authenticate('jwt', { session: false }
         res.json(users)
     })
     .delete((req, res, next) => {
-        const userId = req.params.User_Id 
-        users.users = users.users.filter(item => +item.id !== +userId)
-        res.json(users)
-    });
-router.delete('/profile/:User_Id',
-    passport.authenticate('jwt', { session: false }),
-    (req, res, next) => {
         const userId = req.params.User_Id 
         users.users = users.users.filter(item => +item.id !== +userId)
         res.json(users)
