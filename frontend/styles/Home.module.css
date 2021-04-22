@@ -5,10 +5,18 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-image: url("GundamPhoto.png");
+    background-attachment:fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+
 }
 
-.content {
-    min-width: 25vw;
+.background {
+    background-image: url("GundamPhoto.png");
+    background-attachment: scroll;
+    background-size: cover;
+    -webkit-background-size: cover;
 }
 
 .gridContainer {
@@ -33,3 +41,86 @@
     box-sizing: border-box;
     font-size: 1.2rem;
 }
+.list {
+    display: flex;
+    justify-content:flex-start;
+    list-style: none;
+    margin: 2px;
+    padding: 20px;
+    flex-wrap: wrap;
+    width: 80vw;
+    /* border: 2px solid red;  */
+ }
+ .listItem {
+    width: 30%;
+    display:block;
+    flex-direction: column;
+    margin: 10px;
+    padding: 10px;
+    font-size: 1.4rem;
+ }
+ .buttonAqua {
+    border: none;
+    color:black;
+    padding: 8px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 8px 8px 0px 8px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color:aqua;
+ }
+ .buttonGreen {
+    border: none;
+    color:black;
+    padding: 8px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 8px 8px 0px 8px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color:aquamarine;
+ }
+ .buttonGreenli {
+    border: none;
+    color:black;
+    padding: 8px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 8px 8px 0px 8px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color:cyan;
+ }
+ .buttonRed {
+    border: none;
+    color:black;
+    padding: 8px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 8px 8px 0px 8px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color:crimson;
+ }
+ .button{
+    border: none;
+    color:black;
+    padding: 8px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 8px 8px 0px 8px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color:lightgray;
+ }

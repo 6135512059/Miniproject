@@ -36,7 +36,7 @@ const Profile1 = ({ token }) => {
     const Edituser = () => {
         if (user.classuser == 0)
         return <div>
-                <button onClick={GotoEdit}>Edit User</button>                      
+                <button onClick={GotoEdit} className={styles.button}>Edit User</button>                      
                </div>
     }
     const GotoEdit = () =>{

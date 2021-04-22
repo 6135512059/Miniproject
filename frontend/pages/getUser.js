@@ -77,8 +77,8 @@ const Getuse = ({ token }) => {
           number : {index+1} ,
           Name : {item.username} , 
           Email : {item.email}
-          <button onClick={()=>Updateuser(item.id)}>Update</button>
-          <button onClick={()=>Deleteuser(item.id)}>Delete</button>
+          <button onClick={()=>Updateuser(item.id)}className={styles.buttonAqua}>Update</button>
+          <button onClick={()=>Deleteuser(item.id)} className={styles.buttonRed}>Delete</button>
           </li>
        )
       else  
@@ -97,7 +97,7 @@ const Getuse = ({ token }) => {
       <h2>Edit user</h2>
       Name: <input type="text" onChange={(e)=>setusername(e.target.value)}/><br/>
       email:<input type="text" onChange={(e)=>setemail(e.target.value)}/><br/>
-      <button onClick={ReturnProfile}>Profile</button>
+      <button onClick={ReturnProfile} className={styles.button}>Profile</button>
       </div>
       </Layout>
     )

@@ -73,11 +73,6 @@ export default function Login({ token }) {
         else
             login()
     }
-   
-    const copyText = () => {
-        navigator.clipboard.writeText(token)
-    }
-
     return (
         <Layout>
             <Head>
@@ -86,9 +81,6 @@ export default function Login({ token }) {
             <div className={styles.container}>
                 <Navbar />
                 <h1>Login</h1>
-                <div><b>Token:</b> {token.substring(0, 15)}...
-                <button onClick={copyText}> Copy token </button>
-                </div>
                 <br/>
                 <div>
                     Status:  {status}
@@ -96,9 +88,9 @@ export default function Login({ token }) {
                 <br />
                 {loginForm()}
                 <input type="checkbox" name = "remember"  onChange={(e) => setRemember(e.target.value)}/> 
-                <button onClick={GuestloginForm}> Guest login </button>
+                <button onClick={GuestloginForm} className={styles.buttonGreen}> Guest login </button>
                 <div>
-                 <button onClick={login}>Login</button>
+                 <button onClick={login} className={styles.buttonAqua}>Login</button>
                
                 </div>  
                 </div>

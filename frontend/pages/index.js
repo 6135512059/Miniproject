@@ -21,8 +21,8 @@ export default function Home({ token }) {
         <Navbar />
         <h1>Home page</h1>
         No login required!
-        <button onClick={GotoLogin}>Login</button>
-        <button onClick={GotoRegister}>Register</button>  
+        <button onClick={GotoLogin} className={styles.buttonGreen}>Login</button>
+        <button onClick={GotoRegister} className={styles.buttonGreenli}>Register</button>  
     </div>
 </Layout>
   )

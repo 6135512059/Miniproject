@@ -88,58 +88,58 @@ export default function Home({ token }) {
                   type:<input type="text" onChange={(e)=>setType(e.target.value)}/><br/>
                   Story:<input type="text" onChange={(e)=>setStory(e.target.value)}/><br/>
                   classgundam :<input type="text" onChange={(e)=>setClassgundam(e.target.value)}/><br/>
-                  <button onClick={()=>Updategundam(ID)}>Update</button>
-                  <button onClick={()=>Deletegundam(ID)}>Delete</button>
-                  <button onClick={()=>addgundam(ID)}>ADD</button> 
-                  <button onClick={()=>setEdit(false)}>cancel</button>
+                  <button onClick={()=>Updategundam(ID)} className={styles.buttonAqua} >Update</button>
+                  <button onClick={()=>Deletegundam(ID)} className={styles.buttonRed}>Delete</button>
+                  <button onClick={()=>addgundam(ID)} className={styles.buttonGreen}>ADD</button> 
+                  <button onClick={()=>setEdit(false)}className={styles.button}>cancel</button>
                   </div>
         else if(user.classuser == 1)
         return <div>
               <h1>Edit/ADD Gundam</h1>
               <h3> Gundam: = {gundam.name}</h3>
-              Name: <input type="text" onChange={(e)=>setname(e.target.value)}/><br/>
+              Name: <input type="text" name = "name" onChange={(e)=>setname(e.target.value)}/><br/>
               type:<input type="text" onChange={(e)=>setType(e.target.value)}/><br/>
               Story:<input type="text" onChange={(e)=>setStory(e.target.value)}/><br/>
-              <button onClick={()=>Updategundam(ID)}>Update</button>
-              <button onClick={()=>Deletegundam(ID)}>Delete</button> 
-              <button onClick={()=>addgundam(ID)}>ADD</button>
-              <button onClick={()=>setEdit(false)}>cancel</button>
+              <button onClick={()=>Updategundam(ID)} className={styles.buttonAqua} >Update</button>
+              <button onClick={()=>Deletegundam(ID)} className={styles.buttonRed} >Delete</button> 
+              <button onClick={()=>addgundam(ID) } className={styles.buttonGreen}>ADD</button>
+              <button onClick={()=>setEdit(false)} className={styles.button}>cancel</button>
               </div>
       }
   }
   const AddFrom =() => {
     if(!Edit)
     return <div>
-      <button onClick={()=>EditGundam(ID)}>ADD Data</button>
+      <button onClick={()=>EditGundam(ID)} className={styles.buttonAqua}>ADD Data</button>
     </div>
   }
   const printgundam =() => {
     
     if(gundams.Gundams && gundams.Gundams.length)
     return gundams.Gundams.map((item,index) => 
-    <li key ={index}>
-        number: {index+1} ||
-        Name: {item.name} ||
-        Story: {item.Story} ||
-        type: {item.type} :
-        <button onClick={()=>EditGundam(item.id)}>Edit</button>
-        <button onClick={()=>LinktoWiKi(item.name)}>WiKi</button>  
+    <li key ={index} className={styles.listItem}>
+        number: {index+1}<br/>
+        Name: {item.name}<br/>
+        Story: {item.Story}<br/>
+        type: {item.type} :<br/>
+        <button onClick={()=>EditGundam(item.id) }className={styles.buttonGreen}>Edit</button>
+        <button onClick={()=>LinktoWiKi(item.name)}className={styles.buttonGreenli}>WiKi</button>  
         </li>
      )
     else  
       return (<li>No gundam</li>)
   }
   return (
-    <Layout>
+    <Layout className={styles.background}>
         <Head>
             <title>Gundam list</title>
         </Head>
     <div className={styles.container}>
     <Navbar/>
     <h2>Gundam List</h2>
-      {printgundam()} 
       {EidtForm()}
       {AddFrom()}
+      {printgundam()} 
     </div>
     </Layout>
   )
