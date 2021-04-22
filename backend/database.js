@@ -9,11 +9,11 @@ let users = {
 }
 let Gundams = {
   Gundams: [
-      { id: 1, name: 'Unicorn Gundam', type: 'Gundam', Story: 'Main story' , classgundam: 0 },
-      { id: 2, name: 'Wing Gundam ', type: 'Gundam', Story: 'Main story'  ,classgundam: 0},
-      { id: 3, name: '00 Gundam', type: 'Gundam', Story: 'Side story'  ,classgundam: 0},
-      { id: 4, name: 'GNR-010 0 Raiser', type: 'Mobile armor', Story: 'Side story'  ,classgundam: 0},
-      { id: 5, name: 'GN-0000/XN XN 00 Gundam', type: 'SS Gundam', Story: 'Side story'  ,classgundam: 0},
+      { id: 1, name: 'Unicorn Gundam', type: 'Gundam', Story: 'Main story' , classgundam: 0 ,Createuser: 'Pung' },
+      { id: 2, name: 'Wing Gundam ', type: 'Gundam', Story: 'Main story'  ,classgundam: 0 ,Createuser: 'Pung'},
+      { id: 3, name: '00 Gundam', type: 'Gundam', Story: 'Side story'  ,classgundam: 0 ,Createuser: 'Pung'},
+      { id: 4, name: 'GNR-010 0 Raiser', type: 'Mobile armor', Story: 'Side story'  ,classgundam: 0 ,Createuser: 'Aum'},
+      { id: 5, name: 'GN-0000/XN XN 00 Gundam', type: 'SS Gundam', Story: 'Side story'  ,classgundam: 0 ,Createuser: 'Aum'},
   ]
 }
 /*classuser: 0 Admin

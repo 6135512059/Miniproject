@@ -7,7 +7,7 @@ import Navbar from '../components/navbar'
 import config from '../config/config'
 import { useRouter } from 'next/router'
 //const URLjunp = 'https://gundam.fandom.com/wiki/'
-
+//Createuser
 export default function Home({ token }) {
   const URLjunp = 'https://gundam.fandom.com/wiki/'
   const router = useRouter()
@@ -20,6 +20,7 @@ export default function Home({ token }) {
   const [type , setType] =useState('')
   const [classgundam , setClassgundam] =useState(0)
   const [gundam , Setgundam] = useState({})
+  const [Createuser , setCreateuser] =useState('')
   useEffect(()=>{
     getgundams(),
     getUser()
@@ -44,9 +45,11 @@ export default function Home({ token }) {
   }
   const Deletegundam= async(id) =>{
     if(user.classuser > gundam.classgundam)
-      alert("คุณลบข้อมูลนี้ไม่ได้")
+      alert("คุณลบข้อมูลนี้ไม่ได้") 
     else
-    {
+    { if(user.classuser == 1)
+        if(user.name !== gundam.Createuser)
+          alert("คุณลบข้อมูลนี้ไม่ได้")
       let newgundam = await axios.delete(`${config.URL}/gundam/${id}`)
       Setgundams(newgundam.data)
       setEdit(false)
@@ -55,12 +58,16 @@ export default function Home({ token }) {
     
   }
   const addgundam = async () => {
-  setClassgundam(user.classuser)
-   let newgundam = await axios.post(`${config.URL}/gundam`,{name,type,Story,classgundam})
-   Setgundam(newgundam.data)
-   setClassgundam(0)
-   getgundams()
-   setEdit(false)
+    setClassgundam(user.classuser)
+    setCreateuser(user.name)
+    if (!name || !type || !Story|| !classgundam || !Createuser)
+      alert("Cannot Add with empty string")
+    else
+    {let newgundam = await axios.post(`${config.URL}/gundam`,{name,type,Story,classgundam,Createuser})
+    Setgundam(newgundam.data)
+    setClassgundam(0)
+    getgundams()
+    setEdit(false)}
   }
   const getgundams =async() =>{
     let newgundams = await axios.get(`${config.URL}/gundam`)
@@ -121,7 +128,8 @@ export default function Home({ token }) {
         number: {index+1}<br/>
         Name: {item.name}<br/>
         Story: {item.Story}<br/>
-        type: {item.type} :<br/>
+        type: {item.type}<br/>
+        Created by:{item.Createuser}
         <button onClick={()=>EditGundam(item.id) }className={styles.buttonGreen}>Edit</button>
         <button onClick={()=>LinktoWiKi(item.name)}className={styles.buttonGreenli}>WiKi</button>  
         </li>

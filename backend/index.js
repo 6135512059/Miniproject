@@ -34,14 +34,18 @@ router.route('/gundam')
     })
     .post((req, res) => {
         console.log(req.body)
+        if (!req.body.name || !req.body.type || !req.body.Story|| !req.body.classgundam || !req.body.Createuser)
+            console.log("Cannot Add with empty string")
+        else{ 
         let newgundam = {}
         newgundam.id = (gundams.Gundams.length)?gundams.Gundams[gundams.Gundams.length - 1].id + 1:1
         newgundam.name = req.body.name
         newgundam.type= req.body.type
         newgundam.Story= req.body.Story
         newgundam.classgundam= req.body.classgundam
+        newgundam.Createuser = req.body.Createuser
         gundams = { "Gundams": [...gundams.Gundams, newgundam] }
-        res.json(gundams)
+        res.json(gundams)}
     })
 router.route('/gundam/:Gundam_ID')
     .get((req, res) => {
@@ -64,13 +68,7 @@ router.route('/gundam/:Gundam_ID')
         gundams.Gundams = gundams.Gundams.filter(item => +item.id !== +Gundam_ID)
         res.json(gundams.Gundams)
     });
-router.route('/gundam2/:Gundam_ID')
-    .get((req, res) => {
-        let Gundam_ID = req.params.Gundam_ID
-        let ID = gundams.Gundams.findIndex((item)=> +item.id === +Gundam_ID)
-        console.log(gundams.Gundams[ID])
-        res.json(gundams.Gundams[ID])
-    })
+
 router.route('/class/:Class_id',passport.authenticate('jwt', { session: false }))
     .get((req, res, next) => {
         const Class_id = req.params.Class_id ;
