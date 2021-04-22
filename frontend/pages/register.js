@@ -11,6 +11,7 @@ export default function Register({ token }) {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [password1, setPassword1] = useState('')
     const [status, setStatus] = useState('')
     const [classuser, setclassuser] = useState(1)
     const profileUser = async () => {
@@ -22,7 +23,8 @@ export default function Register({ token }) {
     }
 
     const register = async (req, res) => {
-        try {
+        if(password === password1)
+        {try {
             let result = await axios.post(`${config.URL}/register`,
                 { username, email, password ,classuser})
             console.log('result: ', result)
@@ -32,8 +34,9 @@ export default function Register({ token }) {
         }
         catch (e) {
             console.log(e)
-        }
-
+        }}
+        else
+            alert("passwordไม่เท่ากัน โปรดใส่ค่าใหม่")
     }
 
     const registerForm = () => (
@@ -63,10 +66,18 @@ export default function Register({ token }) {
             <div>
                 <input type="password"
                     name="password"
-                    placeholder="password"
+                    placeholder="Firstpassword"
                     onChange={(e) => setPassword(e.target.value)} />
             </div>
-
+            <div>
+                Password:
+            </div>
+            <div>
+                <input type="password"
+                    name="password2"
+                    placeholder="Secondpassword"
+                    onChange={(e) => setPassword1(e.target.value)} />
+            </div>
         </div>
     )
 

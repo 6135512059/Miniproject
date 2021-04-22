@@ -22,7 +22,7 @@ export default function Home({ token }) {
   const [gundam , Setgundam] = useState({})
   const [Createuser , setCreateuser] =useState('')
   useEffect(()=>{
-    getgundams(),
+    getgundams()
     getUser()
   },[])
   const getUser = async () => {
@@ -30,11 +30,20 @@ export default function Home({ token }) {
         setUser(users.data)
   }
   const Updategundam = async(id) =>{
+    if(user.classuser > gundam.classgundam)
+      alert("คุณแก้ไขข้อมูลนี้ไม่ได้") 
+    else
+    { 
     let gundam = await axios.put(`${config.URL}/gundam/${id}`,{name,type,Story,classgundam})
     Setgundam(gundam.data)
     setEdit(false)
     setClassgundam(0)
-    getgundams()
+    getgundams()}
+  }
+  const ResetData = async(id) =>{
+    setname('')
+    setStory('')
+    setType('')
   }
   const getgundam = async(id) =>{
     
@@ -44,30 +53,41 @@ export default function Home({ token }) {
     
   }
   const Deletegundam= async(id) =>{
-    if(user.classuser > gundam.classgundam)
+    if(+user.classuser > +gundam.classgundam)
       alert("คุณลบข้อมูลนี้ไม่ได้") 
     else
-    { if(user.classuser == 1)
-        if(user.name !== gundam.Createuser)
-          alert("คุณลบข้อมูลนี้ไม่ได้")
+    { 
+      if(user.classuser == 1)
+        { 
+          if(user.username !== gundam.Createuser)
+              alert("คุณลบข้อมูลนี้ไม่ได้")
+          else
+          { 
+            let newgundam = await axios.delete(`${config.URL}/gundam/${id}`)
+            Setgundams(newgundam.data)
+            setEdit(false)
+            getgundams()
+            }
+        }
+      else
+      { 
       let newgundam = await axios.delete(`${config.URL}/gundam/${id}`)
       Setgundams(newgundam.data)
       setEdit(false)
       getgundams()
-    }
+      }
+      }
     
   }
   const addgundam = async () => {
     setClassgundam(user.classuser)
-    setCreateuser(user.name)
-    if (!name || !type || !Story|| !classgundam || !Createuser)
-      alert("Cannot Add with empty string")
-    else
-    {let newgundam = await axios.post(`${config.URL}/gundam`,{name,type,Story,classgundam,Createuser})
+    setCreateuser(user.username)
+    let newgundam = await axios.post(`${config.URL}/gundam`,{name,type,Story,classgundam,Createuser})
     Setgundam(newgundam.data)
     setClassgundam(0)
     getgundams()
-    setEdit(false)}
+    setEdit(false)
+    ResetData()
   }
   const getgundams =async() =>{
     let newgundams = await axios.get(`${config.URL}/gundam`)
@@ -76,7 +96,7 @@ export default function Home({ token }) {
   const EditGundam = (id) =>{
     setID(id)
     getgundam(id)
-    if(user.classuser <= 1 && user.classuser >= 0)  
+    if(user.classuser <= 2 && user.classuser >= 0)  
       setEdit(true)
     else
       alert("Need login to Edit")
@@ -100,7 +120,7 @@ export default function Home({ token }) {
                   <button onClick={()=>addgundam(ID)} className={styles.buttonGreen}>ADD</button> 
                   <button onClick={()=>setEdit(false)}className={styles.button}>cancel</button>
                   </div>
-        else if(user.classuser == 1)
+        else if(user.classuser  <= 2)
         return <div>
               <h1>Edit/ADD Gundam</h1>
               <h3> Gundam: = {gundam.name}</h3>
@@ -121,7 +141,7 @@ export default function Home({ token }) {
     </div>
   }
   const printgundam =() => {
-    
+    getUser()
     if(gundams.Gundams && gundams.Gundams.length)
     return gundams.Gundams.map((item,index) => 
     <li key ={index} className={styles.listItem}>

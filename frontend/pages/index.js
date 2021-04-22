@@ -22,8 +22,8 @@ export default function Home({ token }) {
         <h1>Home page</h1>
         Welcom เพจนี้เขียนโดย 6135512059<br/>
         เพื่อความสะดวอกโปรดล็อกอิน<br/>
-        เพจนี้ มี Admin สองคน<br/>
-        pung และ Aum
+        เพจนี้ มี Admin ชื่อ pung<br/>
+        
         <button onClick={GotoLogin} className={styles.buttonGreen}>Login</button>
         <button onClick={GotoRegister} className={styles.buttonGreenli}>Register</button>  
     </div>

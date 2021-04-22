@@ -24,7 +24,6 @@ router.use(express.json())
 router.use(express.urlencoded({ extended: false }))
 router.route('/userlogin')
     .get((req, res) => {
-        console.log("ส่งค่าไป Gundam list" + user)
         res.json(user)
     });
 router.route('/gundam')
@@ -34,7 +33,7 @@ router.route('/gundam')
     })
     .post((req, res) => {
         console.log(req.body)
-        if (!req.body.name || !req.body.type || !req.body.Story|| !req.body.classgundam || !req.body.Createuser)
+        if (!req.body.name || !req.body.type || !req.body.Story  || !req.body.Createuser)
             console.log("Cannot Add with empty string")
         else{ 
         let newgundam = {}
@@ -42,7 +41,7 @@ router.route('/gundam')
         newgundam.name = req.body.name
         newgundam.type= req.body.type
         newgundam.Story= req.body.Story
-        newgundam.classgundam= req.body.classgundam
+        newgundam.classgundam= +req.body.classgundam
         newgundam.Createuser = req.body.Createuser
         gundams = { "Gundams": [...gundams.Gundams, newgundam] }
         res.json(gundams)}
@@ -57,10 +56,10 @@ router.route('/gundam/:Gundam_ID')
     .put((req, res) => {
         let Gundam_ID = req.params.Gundam_ID ;
         let id = gundams.Gundams.findIndex(item => +item.id === +Gundam_ID)
-        gundams.Gundams[id].name = req.body.name
-        gundams.Gundams[id].type= req.body.type
-        gundams.Gundams[id].Story= req.body.Story
-        gundams.Gundams[id].classgundam= req.body.classgundam
+        gundams.Gundams[id].name = (req.body.name) ? req.body.name : gundams.Gundams[id].name
+        gundams.Gundams[id].type= (req.body.type) ? req.body.type : gundams.Gundams[id].type
+        gundams.Gundams[id].Story= (req.body.Story) ? req.body.Story : gundams.Gundams[id].Story
+        gundams.Gundams[id].classgundam= (req.body.classgundam) ? req.body.classgundam : gundams.Gundams[id].classgundam
         res.json(gundams)
     })
     .delete((req, res) => {
@@ -134,8 +133,8 @@ router.route('/profile/:User_Id',passport.authenticate('jwt', { session: false }
     .put((req, res, next) => {
         const userId = req.params.User_Id ;
         let id = users.users.findIndex(item => +item.id === +userId)
-        users.users[id].username = req.body.username
-        users.users[id].email= req.body.email
+        users.users[id].username = (req.body.username) ? req.body.username : users.users[id].username
+        users.users[id].email= (req.body.email) ? req.body.email : users.users[id].email
         res.json(users)
     })
     .delete((req, res, next) => {
@@ -149,7 +148,7 @@ router.post('/register',
             const SALT_ROUND = 10
             const { username, email, password } = req.body 
             const classuser = 1
-            if (!username || !email || !password || !classuser)
+            if (!username || !email || !password )
                 return res.json( {message: "Cannot register with empty string"})
             if (db.checkExistingUser(username) !== db.NOT_FOUND)
                 return res.json({ message: "Duplicated user" })
